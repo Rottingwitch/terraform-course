@@ -1,0 +1,185 @@
+tipos de iac 
+
+
+Iac orientado a la configuracion
+
+- Seu finalida es instala r y gestionar softwate
+- Nos permite manterner un estandar en nuestro servidores
+- Podemos tener un contros de versiones de nuestro despliegue 
+
+ejemplo Ansible, Puppet
+
+
+Iac Orientados a servidores (Templates)
+
+- Nos permiote tenr pre-instaldo el softwware  y las dependencias necesarias 
+- funcioan tanto para VM como para contenedores
+- Infraestructura inmutable, se crea una nueva version de cada Templates
+
+
+Iac para aprovisionamiento
+
+- Infraestrucuta como codigo declarativo
+- Aprovisionamiento INMUTALBE  en nuestra Infraestructura
+- Toda clse de recrusos como isntancias, base de datos, buckets, etc
+- Podemos deployasr infra en multilple provider
+
+
+QUE ES HCL
+
+ES UNA LENguaje declarativo creado por hashicorp
+
+SIGINIFA - HASHICORP CONFIGURATION LENGUAGE - DECLARATIVO
+
+
+
+CLASE -18 :RESTRINGIR LAS VERSIONES DE TERRAFORM Y PROVIDERS
+
+contrains para que solo acepte una version determinada de terraform en cuanto al provider y las version 
+de terraform
+
+0.15.0 = version exacta
+>= 0.15.1 = cualquier version apartir de las version que se pone hasta las ultima existente
+~> 0.15.0 = (Las mas recomendada por Terraform) cualquier version apartir de la que se pone, hasta anterior 
+de la ultima, pro de la misma version digamos 1.5.0, esta no acepta la 1.4.0 tiene que ser una dentrro del randog que se esta poniendo en este caso 1.5.4, no acepta la ultim ultima, la lates no la acepta
+>= 0.15, < 2.0.0 = Entre rangos de versiones mayor pero menores que otras 
+
+
+
+
+CLASE - 19 VARIABLES
+
+VALORES APLICADO AUTOMATICAMENTE PARA LAS VARIABLES
+
+bien: terraform.tfvars, terraform.tfvar.json
+*.auto.tfvars, *auto.tfvar.json --- este es para poner nombres mas personalizados
+
+mal: proyecto.tfvars --- no se carga automaticamente
+
+
+
+CLASE - 20 VARIABLES TIPOS
+String,number,bool, any
+lista(string) -- [] deben ser del mismo tipo string o number o boolean 
+map(string) -- {}, clave valor, es un objeto tradicional
+set(string) -- [], conjunt, no acepta elementos repetidos, se tiene que manejra en su todalidad, a diferencia que las listas que si tienen indices
+object -- {}, se puede utilizar multiple tipos de variables
+tuple -- [], es lo mismo que una lista pero este si permite varios tipos de elementos como string, number, bool, any
+
+
+
+CLASE - 21 TIPOS DE VARIABLES
+
+Tipo output
+Expone las variables una vez termina un apply, y se puede ver por pantalla, y se invocan po medio de las varible output
+
+
+CLASE 22 DEPENDENCIAS ENTRE COMPOENTNES
+
+depends_on es para depender la creacion de una componente de otro componente
+
+CLASE 23 TARGET RESOURCES 
+
+CLASE 30
+
+bloque de codigo que se llama DATA lo que hace es leer infra existente y utilizarla en nuesestro codigo
+
+CLASE 32 TERRAFORM STATE
+
+Es una representacion real de lo componentes que se han desplegado
+terraform state debe ser remoto para que todos los demas que trabajen en esa infra y este solo se debe subir a un lugar seguro en la nube tal vez un S3 o terraform cloud
+
+
+CLASE 34 LIFECYCLE
+
+se cambiar el ciclo de vida cuando se modifica un compoennte, si primero borraba un compoennte con el etquieta lifecycle hace lo que tenga esa clausula primero y depues si reliza la accion
+
+
+CLASE 36 PROVISIONES
+
+Nos permite ejecutar codigo de manera remmota deesde la maquina o desde algun insntacia que se este creando, no se utiliza de manera remota mas que tod
+
+
+CLASE 37 TERRAFORM TAINT
+
+NOTA ESTOS DOS COMANDO SE UTILIZABAN ANTES PERO AHORA SE UTILIZA "terraform apply replace"
+
+CLASE 38 TERRAFORM LOGGING/DEBUG
+Ver el debug de nuestro infra, diferente tipos de login: info, warning,error, debug, trace siendo el de mas de detalle
+
+CLASE 38 IMPORTAR RECURSOS
+
+
+CLASE 39 WORKSPACES
+Permite reutilizar el codigo
+
+CLASE 40 COUNT VS FOREATCH
+
+CLASE 42 FUNCIONES EN TERRAFORM
+
+FUNCIONES EN TERRAFORM
+# max(-1,4,200,1) para saber el numero maximo
+# min(-1,4,200,1) para saber el numero mininmo
+# ceil(12.5) redonde para arriba
+# floor(12.6) redonde para abajo
+# split(",",var.cadena) sirve para separar un cadena de caracteres por un caracter en especial
+# lower(var.cadena) poner en minuscula una cadena de caracteres
+# upper(var.cadena) poner en mayusucla una cadena de caracteres 
+# title(var.cadena) poener la primeras letras de una cadena de caracteres en mayuscula
+# substr(var.cadena,0,7) cuentas apartir de una cadena de caracteres y toma el utlimo que se le halla indicado a la cadena
+# join("-", var.palabras) Se utiliza para unir las cadenas de caracteres mediante un caracter en especifico
+# index(var.palabra, "como") Busca el indice en una lista de acuerdo a las palbra que se le pase como parametro
+# element(var.palabras, 2) Busca la palabra de acuerdo al indice que se pone
+# contains(var.palabras, "cualquiera") valida que la palabra que se pase como segudno argumento este en el arreglo
+# keys(var.entornos) Trae las llaves de los objetos
+# values(var.entornos) Trae los valores de los objetos
+# lookup(var.entornos, "prod"), lookup(var.entornos, "stag", "no-existe") Nos trae los valores de acuerdo a la keys, si no encuentra alguna valor pone por defecto 
+
+
+CLASE 44 - LOCALS
+Bloque de configuracion que permite construir  los recursos para estadarizar cualquier configuracion que se requiera 
+
+CLASE 47 - MODULOS
+
+CLASE 50 - TERRAFORM CLOUD
+Punto de inicio para el despliegue a las distinta nubes 
+es -> saas software as a service
+
+COMANDOS
+
+- terraform plan --out s3.plan *** GUARDAR UN PLAN EN UN DOUMENTO APARTE
+- terraform apply s3.plan --- EJCUETAR UN PLAN PREVIAMENTE GUARDADO NO VA A PEDIR NI CONFIRMACION
+                            ESTE SE EJECUTARA AUTOMATICAMENTE
+- terraform fmt --- SE EJECUTA EN TODO LOS DOCUEMTNOS TF
+- terraform fmt "archgivo a formaterar" --- LO EJECUTA A SOLO UN ARCHIVO EN ESPECIFICO
+- terraform validate --- VALIDA LOS ERRORES EN LOS DOCUMENTOS
+- terraform plan --var-file "nombreramdom.tfvars" -- PARA EJECUTAR VARIABLES CON ALGUN OTRO NOMBRE QUE NO SEA LOS QUE PERMITE TERRAFORM
+- terraform apply --auto-approve=true --- para ejecutar automaticamente
+- terraform apply --target aws_subnet.public_subnet --- CUANDO SE NECESEITA SOLO HACER DEPLOY DE UN SOLO RECURSO, CUANDO SE ESTA TRABAJANDO EN OTRO, SE PONE EL NOMBRE DEL RECURSO A HACER EL DEPLOY CON EL FLAT "target"
+- terraform show --- RECURSOS QUE ESTAN DEPLOYADOS
+- terraform show -json --- RECURSOS QUE ESTAN DEPLOYADOS en formato json
+- terraform providers --- LISTA LOS PROVIDERS QUE SE ESTA UTILIZANDO
+- terraform output --- lista todos los outputs que se tengan en la infra
+- terraform output aws_pair_key --- se pone el noimbre del recuerso si es que se tiene
+- terraform refresh -- busca cambios en la infra desplegada y actualiza el tfstate
+- terraform graph -- lista de dependencias y como se interrelacion entre ellos
+- terraform graph | dot -Tsvg > graph.svg solo para mac
+- terraform state list -- lista de recursos desplgados 
+- terraform state show aws_instance.public_instance --- Muestra un recurso en especifico y se pone el nombre del recurso
+- terraform state mv aws_subnet.public_subnet aws_subnet.public_subnet_primaria --- mueve recursos dentros de nuestro terraform state, se cambia el nombre de como se llama a como quiero que se llame si necesidad de borrar o alterar los recursos, renombrare recuros
+- terraform state rm aws_instance.public_instance --- borrar instancia desde el terraform state, pero solo lo remueve del state y no de aws, apra que no haga mas seguimiento desde t
+- terraform apply --replace=aws_instance.public_instance --- Sirve para recrear de nuevo un recurso 
+- terraform taint aws_instance.public_instance --- Lo que hace este comando es marcar el recurso para que un recurso en especifico se recostruya nuevasmente, por eso toca poner el recurso al cual se le quiera marcar para este comando
+- terraform untaint aws_instance.public_instance --- Este hace los contrario, desmarca el recurso
+- terraform import aws_instance.mywebserver i-03d86ed3dcb6a2e18 --- importa un recurso que se creo de manera manual desde la inteface grafica de aws a nuestra infra para quie esta este sincronizada
+- terraform workspace list --- lista todos los workspaces que se tienen
+- terraform workspace new prod --- crea el workspaces que se quiera trabajar
+- terraform workspace delete prod --- Borra un workspace elejido
+- terraform console --- para ingresar a la consola de terraform para hacer prueba de las funciones
+- terraform state pull > terraform.tfstate --- para descargar el tfstate de manera local en nuestro pc 
+
+PARA EL EXAMEN
+
+-TERRAFOMR SOLO PUEDE CORRER 10 RECURSOS EN PARALELO(ESTOS PUEDE SER CUSTOMISABLE)
+
+ 
